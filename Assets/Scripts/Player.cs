@@ -1,0 +1,55 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class Player : MonoBehaviour {
+    public Arrow arrow;
+    public GameObject bomb;
+    public Knob knob;
+
+    private int hp = 100;
+    private float speed = 1.0f;
+    private int maxKnobDist = 4;
+    private int forceScale = 200;
+
+    void Start () {
+        
+	}
+
+    void Awake() {
+        //arrow.redraw(new Vector3(transform.position.x, transform.position.y, 0), new Vector3(transform.position.x + 1, transform.position.y + 1, 0));
+    }
+	
+	void Update () {
+        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+        transform.position += move * speed * Time.deltaTime;
+
+        if (Input.GetMouseButtonDown(0)) {
+            Debug.Log("adjust aim");
+            Vector3 worldMouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+            adjustAim(new Vector2(transform.position.x, transform.position.y), new Vector2(worldMouse.x, worldMouse.y));
+        }
+
+        if (Input.GetKeyDown("space")) {
+            Debug.Log("shoot");
+            shoot();
+        }
+    }
+
+    void adjustAim(Vector2 playerPos, Vector2 mousePos) {
+        Vector2 difference = mousePos - playerPos;
+        if (difference.magnitude < maxKnobDist) {
+            knob.setPosition(mousePos.x, mousePos.y);
+            arrow.redraw(new Vector3(playerPos.x, playerPos.y, 0), new Vector3(mousePos.x, mousePos.y, 0));
+        }
+    }
+
+    void shoot() {
+        Vector3 forceVector = knob.transform.position - transform.position;
+        Vector3 spawnLocation = transform.position;
+
+        GameObject newBomb = Instantiate(bomb, transform.position, transform.rotation) as GameObject;
+        newBomb.GetComponent<Rigidbody2D>().AddForce(forceScale * forceVector);
+
+        //knob.reset();
+    }
+}
