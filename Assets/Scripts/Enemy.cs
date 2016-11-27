@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
     public Transform player;
     public GameObject bomb;
     public Text enemyHpText;
+    public TurnManager turnManager;
 
     private float theta = 0.785398f; // 45 degrees
     private int forceScale = 65;
@@ -65,7 +66,7 @@ public class Enemy : MonoBehaviour {
         hp -= dmg;
 
         if (hp <= 0) {
-            Debug.Log("enemy ded");
+            turnManager.gameOver();
         }
 
         updateHealthText();

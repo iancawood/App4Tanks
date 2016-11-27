@@ -19,11 +19,7 @@ public class Land : MonoBehaviour {
         Texture2D alphaClone = new Texture2D(landTexure.width, landTexure.height, TextureFormat.ARGB32, false);
         alphaClone.SetPixels32(landTexure.GetPixels32());
         landTexure = Instantiate(alphaClone);
-        spriteRenderer.sprite = Sprite.Create(
-                                    landTexure,
-                                    new Rect(0f, 0f, landTexure.width, landTexure.height),
-                                    new Vector2(0.5f, 0.5f), 100f
-                                );
+        spriteRenderer.sprite = Sprite.Create(landTexure, new Rect(0f, 0f, landTexure.width, landTexure.height), new Vector2(0.5f, 0.5f), 100f);
 
         widthWorld = spriteRenderer.bounds.size.x;
         heightWorld = spriteRenderer.bounds.size.y;

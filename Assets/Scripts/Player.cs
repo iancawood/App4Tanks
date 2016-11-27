@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     public GameObject bomb;
     public Knob knob;
     public Text playerHpText;
+    public TurnManager turnManager;
 
     private int hp = 100;
     private float speed = 1.0f;
@@ -16,22 +17,21 @@ public class Player : MonoBehaviour {
     void Start () {
         updateHealthText();
     }
-
-    void Awake() {
-        //arrow.redraw(new Vector3(transform.position.x, transform.position.y, 0), new Vector3(transform.position.x + 1, transform.position.y + 1, 0));
-    }
 	
 	void Update () {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
-        transform.position += move * speed * Time.deltaTime;
+        if (turnManager.playerTurn) {
+            Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+            transform.position += move * speed * Time.deltaTime;
 
-        if (Input.GetMouseButtonDown(0)) {
-            Vector3 worldMouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-            adjustAim(new Vector2(transform.position.x, transform.position.y), new Vector2(worldMouse.x, worldMouse.y));
-        }
+            if (Input.GetMouseButtonDown(0)) {
+                Vector3 worldMouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+                adjustAim(new Vector2(transform.position.x, transform.position.y), new Vector2(worldMouse.x, worldMouse.y));
+            }
 
-        if (Input.GetKeyDown("space")) {
-            shoot();
+            if (Input.GetKeyDown("space")) {
+                shoot();
+                //turnManager.nextTurn();
+            }
         }
     }
 
@@ -47,15 +47,13 @@ public class Player : MonoBehaviour {
         Vector3 forceVector = knob.transform.position - transform.position;
         GameObject newBomb = Instantiate(bomb, transform.position, transform.rotation) as GameObject;
         newBomb.GetComponent<Rigidbody2D>().AddForce(forceScale * forceVector);
-
-        //knob.reset();
     }
 
     public void loseHp(int dmg) {
         hp -= dmg;
 
         if (hp <= 0) {
-            Debug.Log("player ded");
+            turnManager.gameOver();
         }
 
         updateHealthText();

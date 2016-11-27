@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Bomb : MonoBehaviour {
     const int SMALL_BOMB = 0;
-    const int BIG_BOMB = 0;
+    const int BIG_BOMB = 1;
 
     int bombType;
 
@@ -22,12 +22,11 @@ public class Bomb : MonoBehaviour {
 
     void Start () {
         initBombTypes();
-
         bombType = SMALL_BOMB;
     }
 
     void initBombTypes() {
-        bombStats.Add(new BombStat(5, 1.5f)); // SMALL_BOMB
+        bombStats.Add(new BombStat(35, 1.5f)); // SMALL_BOMB
         bombStats.Add(new BombStat(10, 5)); // BIG_BOMB
     }
 
