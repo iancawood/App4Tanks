@@ -24,13 +24,11 @@ public class Player : MonoBehaviour {
         transform.position += move * speed * Time.deltaTime;
 
         if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("adjust aim");
             Vector3 worldMouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
             adjustAim(new Vector2(transform.position.x, transform.position.y), new Vector2(worldMouse.x, worldMouse.y));
         }
 
         if (Input.GetKeyDown("space")) {
-            Debug.Log("shoot");
             shoot();
         }
     }
@@ -45,8 +43,6 @@ public class Player : MonoBehaviour {
 
     void shoot() {
         Vector3 forceVector = knob.transform.position - transform.position;
-        Vector3 spawnLocation = transform.position;
-
         GameObject newBomb = Instantiate(bomb, transform.position, transform.rotation) as GameObject;
         newBomb.GetComponent<Rigidbody2D>().AddForce(forceScale * forceVector);
 

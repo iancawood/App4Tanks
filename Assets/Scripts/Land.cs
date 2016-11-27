@@ -2,10 +2,10 @@
 using System.Collections;
 
 /*
- * The logic of this script is based on the logic of this project: https://github.com/marcoprado17/destructible-terrain-demo
+ * The logic of this script is based on the logic of this project: https://github.com/marcoprado17/destructible-land-demo
  */
 
-public class Terrain : MonoBehaviour {
+public class Land : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     private float widthWorld;
     private float heightWorld;
@@ -15,13 +15,13 @@ public class Terrain : MonoBehaviour {
     void Start () {
 	    spriteRenderer = GetComponent<SpriteRenderer>();
 
-        Texture2D terrainTexure = (Texture2D) Resources.Load("Terrain");
-        Texture2D alphaClone = new Texture2D(terrainTexure.width, terrainTexure.height, TextureFormat.ARGB32, false);
-        alphaClone.SetPixels32(terrainTexure.GetPixels32());
-        terrainTexure = Instantiate(alphaClone);
+        Texture2D landTexure = (Texture2D) Resources.Load("Terrain");
+        Texture2D alphaClone = new Texture2D(landTexure.width, landTexure.height, TextureFormat.ARGB32, false);
+        alphaClone.SetPixels32(landTexure.GetPixels32());
+        landTexure = Instantiate(alphaClone);
         spriteRenderer.sprite = Sprite.Create(
-                                    terrainTexure,
-                                    new Rect(0f, 0f, terrainTexure.width, terrainTexure.height),
+                                    landTexure,
+                                    new Rect(0f, 0f, landTexure.width, landTexure.height),
                                     new Vector2(0.5f, 0.5f), 100f
                                 );
 
@@ -33,11 +33,10 @@ public class Terrain : MonoBehaviour {
         reapplyCollider();
     }
    
-    void destroyTerrain(CircleCollider2D collider) {
-        Debug.Log("boom");
+    public void destroyLand(CircleCollider2D collider, float explosionFactor) {
 
         Vector2 center = worldCoordsToPixelCoords(collider.bounds.center.x, collider.bounds.center.y - collider.bounds.size.y / 2f);
-        int radius = (int)(collider.bounds.size.x * widthPixel / widthWorld);
+        int radius = (int)((collider.bounds.size.x * widthPixel / widthWorld) * explosionFactor);
 
         for (int x = -radius; x <= radius; x++) {
             int yBoundary = (int)Mathf.Sqrt(radius * radius - x * x);
