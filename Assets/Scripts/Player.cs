@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Player : MonoBehaviour {
     public Arrow arrow;
     public GameObject bomb;
     public Knob knob;
+    public Text playerHpText;
 
     private int hp = 100;
     private float speed = 1.0f;
@@ -12,8 +14,8 @@ public class Player : MonoBehaviour {
     private int forceScale = 200;
 
     void Start () {
-        
-	}
+        updateHealthText();
+    }
 
     void Awake() {
         //arrow.redraw(new Vector3(transform.position.x, transform.position.y, 0), new Vector3(transform.position.x + 1, transform.position.y + 1, 0));
@@ -47,5 +49,19 @@ public class Player : MonoBehaviour {
         newBomb.GetComponent<Rigidbody2D>().AddForce(forceScale * forceVector);
 
         //knob.reset();
+    }
+
+    public void loseHp(int dmg) {
+        hp -= dmg;
+
+        if (hp <= 0) {
+            Debug.Log("player ded");
+        }
+
+        updateHealthText();
+    }
+
+    void updateHealthText() {
+        playerHpText.text = "Player: " + hp.ToString();
     }
 }

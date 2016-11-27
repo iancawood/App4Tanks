@@ -33,10 +33,10 @@ public class Land : MonoBehaviour {
         reapplyCollider();
     }
    
-    public void destroyLand(CircleCollider2D collider, float explosionFactor) {
+    public void destroyLand(CircleCollider2D collider, float worldRadius) {
 
         Vector2 center = worldCoordsToPixelCoords(collider.bounds.center.x, collider.bounds.center.y - collider.bounds.size.y / 2f);
-        int radius = (int)((collider.bounds.size.x * widthPixel / widthWorld) * explosionFactor);
+        int radius = (int)(worldRadius * widthPixel / widthWorld);
 
         for (int x = -radius; x <= radius; x++) {
             int yBoundary = (int)Mathf.Sqrt(radius * radius - x * x);

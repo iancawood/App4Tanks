@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
-
     public Transform player;
     public GameObject bomb;
+    public Text enemyHpText;
 
     private float theta = 0.785398f; // 45 degrees
     private int forceScale = 65;
+
+    private int hp = 100;
 
     void Update () {
         if (Input.GetKeyDown(KeyCode.M)) {
@@ -15,8 +18,8 @@ public class Enemy : MonoBehaviour {
         }
     }
 	
-	void Awake () {
-        //calculateForce();
+	void Start () {
+        updateHealthText();
     }
 
     void shoot() {
@@ -57,5 +60,19 @@ public class Enemy : MonoBehaviour {
         Debug.Log("force vector" + forceVector);
         return forceVector;
     }
-    
+
+    public void loseHp(int dmg) {
+        hp -= dmg;
+
+        if (hp <= 0) {
+            Debug.Log("enemy ded");
+        }
+
+        updateHealthText();
+    }
+
+    void updateHealthText() {
+        enemyHpText.text = "Enemy: " + hp.ToString();
+    }
+
 }
