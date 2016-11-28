@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Bomb : MonoBehaviour {
+    public Transform explosionAnimation;
+
     public const int SMALL_BOMB = 0;
     public const int BIG_BOMB = 1;
     public const int VOLCANO = 2;
@@ -35,12 +37,13 @@ public class Bomb : MonoBehaviour {
     void initBombTypes() {
         bombStats.Add(new BombStat(15, 2)); // SMALL_BOMB
         bombStats.Add(new BombStat(10, 3)); // BIG_BOMB
-        bombStats.Add(new BombStat(0, 1)); // BIG_BOMB
+        bombStats.Add(new BombStat(0, 0)); // BIG_BOMB
         bombStats.Add(new BombStat(10, 1)); // BIG_BOMB
     }
 
     void OnCollisionEnter2D(Collision2D coll) {
         if (coll.collider.tag == "Terrain") {
+            createExplosionAnimation();
             checkTankCollision();
             GameObject.FindWithTag("Terrain").GetComponent<Land>().destroyLand(GetComponent<CircleCollider2D>(), bombStats[bombType].radius);
             Destroy(this.gameObject);
@@ -67,5 +70,18 @@ public class Bomb : MonoBehaviour {
 
     public void setBombType(int type) {
         bombType = type;
+    }
+
+    void createExplosionAnimation() { 
+        Vector3 offset = new Vector3(0, -0.5f, 0);
+        Transform animation = Instantiate(explosionAnimation, transform.position + offset, transform.rotation) as Transform;
+
+        float animationToWorldRatio = 2.5f; // Animation is about 2.5 world units wide when scale is 1
+        float scale = bombStats[bombType].radius / animationToWorldRatio;
+        if (scale <= 0) {
+            scale = 1 / animationToWorldRatio;
+        }
+
+        animation.localScale = new Vector3(scale, scale, 0);
     }
 }
