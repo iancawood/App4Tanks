@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Bomb : MonoBehaviour {
-    const int SMALL_BOMB = 0;
-    const int BIG_BOMB = 1;
+    public const int SMALL_BOMB = 0;
+    public const int BIG_BOMB = 1;
+    public const int VOLCANO = 2;
+    public const int MINI_VOLCANO = 3;
 
-    int bombType;
+    int bombType = SMALL_BOMB;
 
     class BombStat {
         public int damage;
@@ -22,12 +24,19 @@ public class Bomb : MonoBehaviour {
 
     void Start () {
         initBombTypes();
-        bombType = SMALL_BOMB;
+    }
+
+    void Update() {
+        if (Mathf.Abs(transform.position.x) > 50 || Mathf.Abs(transform.position.y) > 50) {
+            Destroy(this.gameObject);
+        }
     }
 
     void initBombTypes() {
-        bombStats.Add(new BombStat(35, 1.5f)); // SMALL_BOMB
-        bombStats.Add(new BombStat(10, 5)); // BIG_BOMB
+        bombStats.Add(new BombStat(15, 2)); // SMALL_BOMB
+        bombStats.Add(new BombStat(10, 3)); // BIG_BOMB
+        bombStats.Add(new BombStat(0, 1)); // BIG_BOMB
+        bombStats.Add(new BombStat(10, 1)); // BIG_BOMB
     }
 
     void OnCollisionEnter2D(Collision2D coll) {
@@ -54,5 +63,9 @@ public class Bomb : MonoBehaviour {
         if (enemyDistance < (bombStats[bombType].radius + tolerance)) {
             enemy.GetComponent<Enemy>().loseHp(bombStats[bombType].damage);
         }
+    }
+
+    public void setBombType(int type) {
+        bombType = type;
     }
 }

@@ -8,14 +8,18 @@ public class Player : MonoBehaviour {
     public Knob knob;
     public Text playerHpText;
     public TurnManager turnManager;
+    public Text bombText;
 
     private int hp = 100;
     private float speed = 1.0f;
     private int maxKnobDist = 4;
     private int forceScale = 200;
+    private int selectedBombType;
 
     void Start () {
         updateHealthText();
+        selectedBombType = Bomb.SMALL_BOMB;
+        updateBombText();
     }
 	
 	void Update () {
@@ -32,6 +36,17 @@ public class Player : MonoBehaviour {
                 shoot();
                 //turnManager.nextTurn();
             }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1)) { // small bomb
+                selectedBombType = Bomb.SMALL_BOMB;
+                updateBombText();
+            } else if (Input.GetKeyDown(KeyCode.Alpha2)) { // big bomb
+                selectedBombType = Bomb.BIG_BOMB;
+                updateBombText();
+            } else if (Input.GetKeyDown(KeyCode.Alpha3)) { // volcano
+                selectedBombType = Bomb.VOLCANO;
+                updateBombText();
+            }
         }
     }
 
@@ -46,6 +61,7 @@ public class Player : MonoBehaviour {
     void shoot() {
         Vector3 forceVector = knob.transform.position - transform.position;
         GameObject newBomb = Instantiate(bomb, transform.position, transform.rotation) as GameObject;
+        newBomb.GetComponent<Bomb>().setBombType(selectedBombType);
         newBomb.GetComponent<Rigidbody2D>().AddForce(forceScale * forceVector);
     }
 
@@ -61,5 +77,25 @@ public class Player : MonoBehaviour {
 
     void updateHealthText() {
         playerHpText.text = "Player: " + hp.ToString();
+    }
+
+    void updateBombText() {
+        string bombName = "";
+
+        switch(selectedBombType) {
+            case Bomb.SMALL_BOMB:
+                bombName = "Small Bomb";
+                break;
+            case Bomb.BIG_BOMB:
+                bombName = "Big Bomb";
+                break;
+            case Bomb.VOLCANO:
+                bombName = "Volcano";
+                break;
+            default:
+                break;
+        }
+
+        bombText.text = "Bomb: " + bombName;
     }
 }

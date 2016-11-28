@@ -4,11 +4,11 @@ using System.Collections;
 
 public class TurnManager : MonoBehaviour {
     public Text turnText;
+    public Timer timer;
 
     public bool playerTurn = true;
 
     int turnNumber = 1;
-    int turnTimeout = 30;
 
 	void Start () {
         updateTurnText();
@@ -18,10 +18,11 @@ public class TurnManager : MonoBehaviour {
 	    
 	}
 
-    public void nextTurn() {
+    public void nextTurn(bool forced = false) {
         playerTurn = !playerTurn;
         turnNumber++;
         updateTurnText();
+        timer.reset();
     }   
 
     public void gameOver() {
