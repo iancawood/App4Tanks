@@ -25,8 +25,8 @@ public class TurnManager : MonoBehaviour {
         timer.reset();
     }   
 
-    public void gameOver() {
-        Debug.Log("game over");
+    public void gameOver(bool playerWin) {
+        Debug.Log("game over, winner: " + (playerWin ? "player" : "enemy"));
     }
 
     void updateTurnText() {

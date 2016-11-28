@@ -9,13 +9,19 @@ public class Enemy : MonoBehaviour {
     public TurnManager turnManager;
 
     private float theta = 0.785398f; // 45 degrees
-    private int forceScale = 65;
-
+    //private int forceScale = 65;
+    private bool routineStarted = false;
     private int hp = 100;
 
     void Update () {
-        if (Input.GetKeyDown(KeyCode.M)) {
-            shoot();
+        if (!turnManager.playerTurn && !routineStarted) {
+            routineStarted = true;
+            StartCoroutine(enemyTurn());
+        }
+
+        if (Mathf.Abs(transform.position.x) > 50 || Mathf.Abs(transform.position.y) > 50) {
+            turnManager.gameOver(true);
+            Destroy(this.gameObject);
         }
     }
 	
@@ -23,13 +29,32 @@ public class Enemy : MonoBehaviour {
         updateHealthText();
     }
 
-    void shoot() {
-        Vector3 forceVector = calculateForce();
-        GameObject newBomb = Instantiate(bomb, transform.position, transform.rotation) as GameObject;
-        newBomb.GetComponent<Rigidbody2D>().AddForce(forceScale * forceVector);
+    IEnumerator enemyTurn() {
+        yield return new WaitForSeconds(3);
+        shoot();
+        yield return new WaitForSeconds(3);
+        turnManager.nextTurn();
+        routineStarted = false;
     }
 
-    Vector3 calculateForce() {
+    void shoot() {
+        float deltaX = player.position.x - transform.position.x;
+        float deltaY = player.position.y - transform.position.y;
+        float force = approximateForce(deltaX);
+        float offset = Random.Range(0, 0.25f * Mathf.Abs(force));
+
+        Vector3 forceVector = new Vector3(force, Mathf.Abs(force) + (deltaY >= 0 ? offset : -offset), 0);
+        GameObject newBomb = Instantiate(bomb, transform.position, transform.rotation) as GameObject;
+        newBomb.GetComponent<Rigidbody2D>().AddForce(forceVector);
+    }
+
+    float approximateForce(float deltaX) { // used by sampling data and throwing it in excel
+        float absoluteX = Mathf.Abs(deltaX);
+        float y = (-0.4241f * absoluteX * absoluteX) + (27.575f * absoluteX) + 116.12f;
+        return deltaX > 0 ? y : -y;
+    }
+
+    Vector3 calculateForce() { // real math, not actually using this, because of some error
         // Find initial velocity
         float deltaX = player.position.x - transform.position.x;
         float deltaY = player.position.y - transform.position.y;
@@ -39,14 +64,9 @@ public class Enemy : MonoBehaviour {
         float initVelSquared = (Physics2D.gravity.y * deltaX * deltaX) / (2 * cosSquaredTheta * (deltaY - deltaX * tanTheta));
         float initialVelocity = Mathf.Sqrt(Mathf.Abs(initVelSquared));
 
-        Debug.Log("init velocity: " + initialVelocity);
-
         if (initVelSquared < 0) {
             initialVelocity *= -1;
         }
-
-        float time = deltaX / (initialVelocity * Mathf.Cos(theta));
-        Debug.Log("time: " + time);
 
         // Find initial force
         float distance = Mathf.Sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -57,18 +77,14 @@ public class Enemy : MonoBehaviour {
         if (deltaX < 0) {
             forceVector.x *= -1;
         }
-         
-        Debug.Log("force vector" + forceVector);
         return forceVector;
     }
 
     public void loseHp(int dmg) {
         hp -= dmg;
-
         if (hp <= 0) {
-            turnManager.gameOver();
+            turnManager.gameOver(true);
         }
-
         updateHealthText();
     }
 

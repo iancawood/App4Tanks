@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     public Text bombText;
 
     private int hp = 100;
-    private float speed = 1.0f;
+    private float speed = 2.0f;
     private int maxKnobDist = 4;
     private int forceScale = 200;
     private int selectedBombType;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
 
             if (Input.GetKeyDown("space")) {
                 shoot();
-                //turnManager.nextTurn();
+                turnManager.nextTurn();
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha1)) { // small bomb
@@ -50,6 +50,11 @@ public class Player : MonoBehaviour {
                 selectedBombType = Bomb.THREE_STAGE;
                 updateBombText();
             }
+        }
+
+        if (Mathf.Abs(transform.position.x) > 50 || Mathf.Abs(transform.position.y) > 50) {
+            turnManager.gameOver(false);
+            Destroy(this.gameObject);
         }
     }
 
@@ -70,11 +75,9 @@ public class Player : MonoBehaviour {
 
     public void loseHp(int dmg) {
         hp -= dmg;
-
         if (hp <= 0) {
-            turnManager.gameOver();
+            turnManager.gameOver(false);
         }
-
         updateHealthText();
     }
 
@@ -84,7 +87,6 @@ public class Player : MonoBehaviour {
 
     void updateBombText() {
         string bombName = "";
-
         switch(selectedBombType) {
             case Bomb.SMALL_BOMB:
                 bombName = "Small";
@@ -101,7 +103,6 @@ public class Player : MonoBehaviour {
             default:
                 break;
         }
-
         bombText.text = "Bomb: " + bombName;
     }
 }
