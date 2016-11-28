@@ -46,6 +46,9 @@ public class Player : MonoBehaviour {
             } else if (Input.GetKeyDown(KeyCode.Alpha3)) { // volcano
                 selectedBombType = Bomb.VOLCANO;
                 updateBombText();
+            } else if (Input.GetKeyDown(KeyCode.Alpha4)) { // three_stage
+                selectedBombType = Bomb.THREE_STAGE;
+                updateBombText();
             }
         }
     }
@@ -84,13 +87,16 @@ public class Player : MonoBehaviour {
 
         switch(selectedBombType) {
             case Bomb.SMALL_BOMB:
-                bombName = "Small Bomb";
+                bombName = "Small";
                 break;
             case Bomb.BIG_BOMB:
-                bombName = "Big Bomb";
+                bombName = "Big";
                 break;
             case Bomb.VOLCANO:
                 bombName = "Volcano";
+                break;
+            case Bomb.THREE_STAGE:
+                bombName = "Three Stage";
                 break;
             default:
                 break;
