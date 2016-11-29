@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 
     private int hp = 100;
     private float speed = 2.0f;
-    private int maxKnobDist = 4;
+    private float maxKnobDist = 4.5f;
     private int forceScale = 200;
     private int selectedBombType;
 
