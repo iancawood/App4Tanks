@@ -6,22 +6,21 @@ public class Spawner : MonoBehaviour {
     public Transform player;
     public Transform enemy;
 
-    public const int MAP_FLAP = 1;
-    public const int MAP_USHAPE = 2;
-    public const int MAP_ISLANDS = 3;
-
+    public const int MAP_FLAP = 0;
+    public const int MAP_USHAPE = 1;
+    public const int MAP_ISLANDS = 2;
 
     void Start () {
-        int landOrientation = 1;
+        int selectedMap = PlayerPrefs.GetInt("SelectedMap");
 
-        switch(landOrientation) {
-            case MAP_FLAP: // flat
+        switch(selectedMap) {
+            case MAP_FLAP:
                 flat();
                 break;
-            case MAP_USHAPE: // u shape
+            case MAP_USHAPE:
                 ushape();
                 break;
-            case MAP_ISLANDS: // islands
+            case MAP_ISLANDS:
                 islands();
                 break;
             default:

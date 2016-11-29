@@ -44,7 +44,7 @@ public class Bomb : MonoBehaviour {
         bombStats.Add(new BombStat(15, 2)); // SMALL_BOMB
         bombStats.Add(new BombStat(10, 3)); // BIG_BOMB
         bombStats.Add(new BombStat(0, 0)); // VOLCANO
-        bombStats.Add(new BombStat(5, 1)); // MINI_VOLCANO
+        bombStats.Add(new BombStat(5, 1.5f)); // MINI_VOLCANO
         bombStats.Add(new BombStat(5, 1)); // THREE_STAGE
         bombStats.Add(new BombStat(5, 2)); // THREE_STAGE_SECOND
         bombStats.Add(new BombStat(5, 3)); // THREE_STAGE_THIRD

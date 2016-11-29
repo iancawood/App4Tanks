@@ -11,6 +11,12 @@ using System.Collections;
 public class MainMenu : MonoBehaviour {
     public GameObject mainPanel;
     public GameObject howToPlayPanel;
+    public GameObject selectMapPanel;
+    public Dropdown mapSelectDropdown;
+
+    void Start() {
+        mapSelectDropdown.value = PlayerPrefs.GetInt("SelectedMap");
+    }
 
     public void playButton() {
         SceneManager.LoadScene("TanksGame");
@@ -19,14 +25,26 @@ public class MainMenu : MonoBehaviour {
     public void displayHowToPlay() {
         mainPanel.SetActive(false);
         howToPlayPanel.SetActive(true);
+        selectMapPanel.SetActive(false);
+    }
+
+    public void displaySelectMap() {
+        mainPanel.SetActive(false);
+        howToPlayPanel.SetActive(false);
+        selectMapPanel.SetActive(true);
     }
 
     public void returnToMainMenu() {
-        howToPlayPanel.SetActive(false);
         mainPanel.SetActive(true);
+        howToPlayPanel.SetActive(false);
+        selectMapPanel.SetActive(false);
     }
 
     public void exit() {
         Application.Quit();
+    }
+
+    public void selectMap() {
+        PlayerPrefs.SetInt("SelectedMap", mapSelectDropdown.value);
     }
 }

@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
 
             if (Input.GetKeyDown("space")) {
                 shoot();
-                //turnManager.nextTurn();
+                turnManager.nextTurn();
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha1)) { // small bomb
