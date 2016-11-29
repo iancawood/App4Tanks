@@ -5,6 +5,8 @@ using System.Collections;
 public class TurnManager : MonoBehaviour {
     public Text turnText;
     public Timer timer;
+    public GameObject gameOverPanel;
+    public Text winnerText;
 
     public bool playerTurn = true;
 
@@ -13,10 +15,6 @@ public class TurnManager : MonoBehaviour {
 	void Start () {
         updateTurnText();
     }
-	
-	void Update () {
-	    
-	}
 
     public void nextTurn(bool forced = false) {
         playerTurn = !playerTurn;
@@ -26,7 +24,9 @@ public class TurnManager : MonoBehaviour {
     }   
 
     public void gameOver(bool playerWin) {
-        Debug.Log("game over, winner: " + (playerWin ? "player" : "enemy"));
+        Time.timeScale = 0;
+        gameOverPanel.SetActive(true);
+        winnerText.text = "Winner: " + (playerWin ? "Player" : "Enemy");
     }
 
     void updateTurnText() {

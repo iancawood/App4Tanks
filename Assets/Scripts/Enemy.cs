@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour {
     public TurnManager turnManager;
 
     private float theta = 0.785398f; // 45 degrees
-    //private int forceScale = 65;
     private bool routineStarted = false;
     private int hp = 100;
 
@@ -19,7 +18,7 @@ public class Enemy : MonoBehaviour {
             StartCoroutine(enemyTurn());
         }
 
-        if (Mathf.Abs(transform.position.x) > 50 || Mathf.Abs(transform.position.y) > 50) {
+        if (Mathf.Abs(transform.position.x) > 30 || Mathf.Abs(transform.position.y) > 30) {
             turnManager.gameOver(true);
             Destroy(this.gameObject);
         }

@@ -6,8 +6,6 @@ using System.Collections;
 /*
  * Source of toon explosion animation: https://www.assetstore.unity3d.com/en/#!/content/66932
  * Originally written by: Red Shark
- * 
- * 
  */
 
 public class MainMenu : MonoBehaviour {

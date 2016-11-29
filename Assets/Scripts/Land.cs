@@ -38,16 +38,16 @@ public class Land : MonoBehaviour {
             int yBoundary = (int)Mathf.Sqrt(radius * radius - x * x);
             int currentX = (int)center.x + x;
 
-            if (0 < currentX && currentX <= spriteRenderer.sprite.texture.width) {
+            if (0 <= currentX && currentX <= spriteRenderer.sprite.texture.width) {
                 for (int y = 0; y <= yBoundary; y++) {
                     int up = (int)center.y + y;
                     int down = (int)center.y - y;
                     
-                    if (0 < up && up <= spriteRenderer.sprite.texture.height) {
+                    if (0 <= up && up <= spriteRenderer.sprite.texture.height) {
                         spriteRenderer.sprite.texture.SetPixel(currentX, up, Color.clear);
                     }
 
-                    if (0 < down && down <= spriteRenderer.sprite.texture.height) {
+                    if (0 <= down && down <= spriteRenderer.sprite.texture.height) {
                         spriteRenderer.sprite.texture.SetPixel(currentX, down, Color.clear);
                     }
                 }

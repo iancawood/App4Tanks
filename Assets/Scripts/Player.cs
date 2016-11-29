@@ -52,7 +52,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (Mathf.Abs(transform.position.x) > 50 || Mathf.Abs(transform.position.y) > 50) {
+        if (Mathf.Abs(transform.position.x) > 30 || Mathf.Abs(transform.position.y) > 30) {
             turnManager.gameOver(false);
             Destroy(this.gameObject);
         }
