@@ -69,7 +69,10 @@ public class Bomb : MonoBehaviour {
     void explode() {
         createExplosionAnimation();
         checkTankCollision();
-        GameObject.FindWithTag("Terrain").GetComponent<Land>().destroyLand(GetComponent<CircleCollider2D>(), bombStats[bombType].radius);
+        GameObject[] terrainBlocks = GameObject.FindGameObjectsWithTag("Terrain");
+        foreach(GameObject terrainBlock in terrainBlocks) {
+            terrainBlock.GetComponent<Land>().destroyLand(GetComponent<CircleCollider2D>(), bombStats[bombType].radius);
+        }
     }
 
     void checkTankCollision() {

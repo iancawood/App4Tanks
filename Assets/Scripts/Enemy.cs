@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour {
     }
 
     IEnumerator enemyTurn() {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         shoot();
         yield return new WaitForSeconds(3);
         turnManager.nextTurn();

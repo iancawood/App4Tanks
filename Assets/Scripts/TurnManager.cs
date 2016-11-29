@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour {
     int turnNumber = 1;
 
 	void Start () {
+        Time.timeScale = 1;
         updateTurnText();
     }
 
